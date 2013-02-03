@@ -17,6 +17,7 @@ import br.com.cobregratis.exceptions.CobreGratisNotFoundException;
 import br.com.cobregratis.exceptions.CobreGratisServiceUnavailableException;
 import br.com.cobregratis.exceptions.CobreGratisTooManyRequestsException;
 import br.com.cobregratis.exceptions.CobreGratisUnauthorizedException;
+import br.com.cobregratis.exceptions.CobreGratisUnprocessibleEntityException;
 import br.com.cobregratis.models.BankBillet;
 
 
@@ -127,28 +128,14 @@ public class TestCobreGratis {
 	}
 
 	@Test
-	public void testListBankBillets() {
+	public void testListBankBillets() throws InterruptedException {
 		try {
-			List<BankBillet> list = cobreGratis.getBankBillets(2);
+			Thread.sleep(1000);
+			List<BankBillet> list = cobreGratis.getBankBillets();
 			if(list == null || list.isEmpty()) {
 				fail();
 			}
-			assertEquals(18, list.size());
-			BankBillet billet = list.get(list.size()-1) ;
-			assertEquals("00001", billet.getOurNumber());
-			assertEquals("Teste", billet.getName());
-			assertEquals("00191.23454 67000.000009 00000.001214 5 54960000001000", billet.getLine());
-			assertEquals(Boolean.FALSE, billet.getCreatedByApi());
-			assertEquals(10.00, billet.getAmount().floatValue(), .1);
-			assertEquals(new Integer(3337),billet.getBankBilletAccountId());
-
-			billet = list.get(0) ;
-			assertEquals("00018", billet.getOurNumber());
-			assertEquals("Carlos Ribeiro - sacado", billet.getName());
-			assertEquals(Boolean.TRUE, billet.getCreatedByApi());
-			assertEquals(230.00, billet.getAmount().floatValue(), .1);
-			assertEquals(new Integer(3337),billet.getBankBilletAccountId());
-			assertEquals("p", billet.getStatus());
+			assertEquals(Boolean.TRUE, list.size() > 1);
 
 		} catch (CobreGratisBadRequestException e) {
 			e.printStackTrace();
@@ -164,6 +151,79 @@ public class TestCobreGratis {
 			e.printStackTrace();
 		} catch (CobreGratisInternalServerErrorException e) {
 			e.printStackTrace();
+		}
+	}
+
+	@Test
+	public void testUpdate() throws InterruptedException {
+		try {
+			BankBillet billet = cobreGratis.getBankBillet(108874);
+			BigDecimal oldValue = billet.getAmount();
+			billet.setAmount(billet.getAmount().add(new BigDecimal(10)));
+			Thread.sleep(1000);
+			cobreGratis.update(billet);
+			assertEquals(oldValue.add(new BigDecimal(10)).floatValue(), billet.getAmount().floatValue(), .1);
+		} catch (CobreGratisBadRequestException e) {
+			e.printStackTrace();
+			fail();
+		} catch (CobreGratisUnauthorizedException e) {
+			e.printStackTrace();
+			fail();
+		} catch (CobreGratisForbiddenException e) {
+			e.printStackTrace();
+			fail();
+		} catch (CobreGratisServiceUnavailableException e) {
+			e.printStackTrace();
+			fail();
+		} catch (CobreGratisInternalServerErrorException e) {
+			e.printStackTrace();
+			fail();
+		} catch (CobreGratisNotFoundException e) {
+			e.printStackTrace();
+			fail();
+		} catch (CobreGratisTooManyRequestsException e) {
+			e.printStackTrace();
+			fail();
+		} catch (CobreGratisUnprocessibleEntityException e) {
+			e.printStackTrace();
+			fail();
+		}
+	}
+
+	@Test
+	public void testDelete() throws InterruptedException {
+		BankBillet billet = new BankBillet();
+		billet.setAmount(new BigDecimal(230.00));
+		Calendar calExpire = Calendar.getInstance();
+		calExpire.set(25, 3, 2013, 0, 0,0);
+		billet.setExpireAt(calExpire.getTime());
+		billet.setName("Carlos Ribeiro - sacado");
+		try {
+			Thread.sleep(1000);
+			billet = cobreGratis.save(billet);
+			Thread.sleep(1000);
+			cobreGratis.delete(billet);
+		} catch (CobreGratisBadRequestException e) {
+			e.printStackTrace();
+			fail();
+		} catch (CobreGratisUnauthorizedException e) {
+			e.printStackTrace();
+			fail();
+		} catch (CobreGratisForbiddenException e) {
+			e.printStackTrace();
+			fail();
+		} catch (CobreGratisNotFoundException e) {
+			e.printStackTrace();
+			fail();
+		} catch (CobreGratisTooManyRequestsException e) {
+			e.printStackTrace();
+			fail();
+		} catch (CobreGratisServiceUnavailableException e) {
+			e.printStackTrace();
+			fail();
+		} catch (CobreGratisInternalServerErrorException e) {
+			e.printStackTrace();
+			fail();
 		}
 	}
 

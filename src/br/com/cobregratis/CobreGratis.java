@@ -15,6 +15,7 @@ import br.com.cobregratis.exceptions.CobreGratisNotFoundException;
 import br.com.cobregratis.exceptions.CobreGratisServiceUnavailableException;
 import br.com.cobregratis.exceptions.CobreGratisTooManyRequestsException;
 import br.com.cobregratis.exceptions.CobreGratisUnauthorizedException;
+import br.com.cobregratis.exceptions.CobreGratisUnprocessibleEntityException;
 import br.com.cobregratis.models.BankBillet;
 import br.com.cobregratis.models.BankBilletWrapper;
 
@@ -52,34 +53,107 @@ public class CobreGratis {
 			CobreGratisServiceUnavailableException,
 			CobreGratisInternalServerErrorException,
 			CobreGratisTooManyRequestsException {
-			BankBilletWrapper wrapper = new BankBilletWrapper();
-			wrapper.setBankBillet(billet);
-			String json = gson.toJson(wrapper);
-			ClientResponse response = getWebResource().path("bank_billets").type(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
-					.header("User-Agent", appId).post(ClientResponse.class, json);
-			switch (response.getStatus()) {
-			case 201:
-				String jsonNew = response.getEntity(String.class);
-				wrapper = gson.fromJson(jsonNew, BankBilletWrapper.class);
-				return wrapper.getBankBillet();
-			case 400:
-				throw new CobreGratisBadRequestException();
-			case 401:
-				throw new CobreGratisUnauthorizedException();
-			case 403:
-				throw new CobreGratisForbiddenException();
-			case 404:
-				throw new CobreGratisNotFoundException();
-			case 429:
-				throw new CobreGratisTooManyRequestsException();
-			case 503:
-				throw new CobreGratisServiceUnavailableException();
-			case 500:
-				throw new CobreGratisInternalServerErrorException();
-			default:
-				break;
-			}
-			return null;
+		BankBilletWrapper wrapper = new BankBilletWrapper();
+		wrapper.setBankBillet(billet);
+		String json = gson.toJson(wrapper);
+		ClientResponse response = getWebResource().path("bank_billets")
+				.type(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON).header("User-Agent", appId)
+				.post(ClientResponse.class, json);
+		switch (response.getStatus()) {
+		case 201:
+			String jsonNew = response.getEntity(String.class);
+			wrapper = gson.fromJson(jsonNew, BankBilletWrapper.class);
+			billet = wrapper.getBankBillet();
+			return wrapper.getBankBillet();
+		case 400:
+			throw new CobreGratisBadRequestException();
+		case 401:
+			throw new CobreGratisUnauthorizedException();
+		case 403:
+			throw new CobreGratisForbiddenException();
+		case 404:
+			throw new CobreGratisNotFoundException();
+		case 429:
+			throw new CobreGratisTooManyRequestsException();
+		case 503:
+			throw new CobreGratisServiceUnavailableException();
+		case 500:
+			throw new CobreGratisInternalServerErrorException();
+		default:
+			break;
+		}
+		return null;
+	}
+
+	public void delete(BankBillet billet) throws CobreGratisBadRequestException, CobreGratisUnauthorizedException, CobreGratisForbiddenException, CobreGratisNotFoundException, CobreGratisTooManyRequestsException, CobreGratisServiceUnavailableException, CobreGratisInternalServerErrorException {
+		BankBilletWrapper wrapper = new BankBilletWrapper();
+		wrapper.setBankBillet(billet);
+		String json = gson.toJson(wrapper);
+		ClientResponse response = getWebResource().path("bank_billets").path(billet.getId().toString()).type(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON).header("User-Agent", appId).delete(ClientResponse.class, json);
+		switch (response.getStatus()) {
+		case 200:
+			return;
+		case 400:
+			throw new CobreGratisBadRequestException();
+		case 401:
+			throw new CobreGratisUnauthorizedException();
+		case 403:
+			throw new CobreGratisForbiddenException();
+		case 404:
+			throw new CobreGratisNotFoundException();
+		case 429:
+			throw new CobreGratisTooManyRequestsException();
+		case 503:
+			throw new CobreGratisServiceUnavailableException();
+		case 500:
+			throw new CobreGratisInternalServerErrorException();
+		default:
+			break;
+		}
+
+	}
+
+	public BankBillet update(BankBillet billet)
+			throws CobreGratisBadRequestException,
+			CobreGratisUnauthorizedException, CobreGratisForbiddenException,
+			CobreGratisNotFoundException,
+			CobreGratisServiceUnavailableException,
+			CobreGratisInternalServerErrorException,
+			CobreGratisTooManyRequestsException,
+			CobreGratisUnprocessibleEntityException {
+		BankBilletWrapper wrapper = new BankBilletWrapper();
+		wrapper.setBankBillet(billet);
+		String json = gson.toJson(wrapper);
+		ClientResponse response = getWebResource().path("bank_billets")
+				.path(billet.getId().toString())
+				.type(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON).header("User-Agent", appId)
+				.put(ClientResponse.class, json);
+		switch (response.getStatus()) {
+		case 200:
+			return billet;
+		case 400:
+			throw new CobreGratisBadRequestException();
+		case 401:
+			throw new CobreGratisUnauthorizedException();
+		case 403:
+			throw new CobreGratisForbiddenException();
+		case 404:
+			throw new CobreGratisNotFoundException();
+		case 422:
+			throw new CobreGratisUnprocessibleEntityException();
+		case 429:
+			throw new CobreGratisTooManyRequestsException();
+		case 503:
+			throw new CobreGratisServiceUnavailableException();
+		case 500:
+			throw new CobreGratisInternalServerErrorException();
+		default:
+			break;
+		}
+		return null;
 	}
 
 	public BankBillet getBankBillet(Integer id)
@@ -95,7 +169,8 @@ public class CobreGratis {
 		switch (response.getStatus()) {
 		case 200:
 			String json = response.getEntity(String.class);
-			BankBilletWrapper wrappedBillet = gson.fromJson(json, BankBilletWrapper.class);
+			BankBilletWrapper wrappedBillet = gson.fromJson(json,
+					BankBilletWrapper.class);
 			return wrappedBillet.getBankBillet();
 		case 400:
 			throw new CobreGratisBadRequestException();
@@ -117,21 +192,38 @@ public class CobreGratis {
 		return null;
 	}
 
-	public List<BankBillet> getBankBillets() throws CobreGratisBadRequestException, CobreGratisUnauthorizedException, CobreGratisForbiddenException, CobreGratisNotFoundException, CobreGratisTooManyRequestsException, CobreGratisServiceUnavailableException, CobreGratisInternalServerErrorException {
+	public List<BankBillet> getBankBillets()
+			throws CobreGratisBadRequestException,
+			CobreGratisUnauthorizedException, CobreGratisForbiddenException,
+			CobreGratisNotFoundException, CobreGratisTooManyRequestsException,
+			CobreGratisServiceUnavailableException,
+			CobreGratisInternalServerErrorException {
 		return getBankBillets(null);
 	}
-	public List<BankBillet> getBankBillets(Integer page) throws CobreGratisBadRequestException, CobreGratisUnauthorizedException, CobreGratisForbiddenException, CobreGratisNotFoundException, CobreGratisTooManyRequestsException, CobreGratisServiceUnavailableException, CobreGratisInternalServerErrorException {
+
+	public List<BankBillet> getBankBillets(Integer page)
+			throws CobreGratisBadRequestException,
+			CobreGratisUnauthorizedException, CobreGratisForbiddenException,
+			CobreGratisNotFoundException, CobreGratisTooManyRequestsException,
+			CobreGratisServiceUnavailableException,
+			CobreGratisInternalServerErrorException {
 		ClientResponse response;
 		if (page != null) {
-			response = getWebResource().path("bank_billets").queryParam("page", page.toString()).accept(MediaType.APPLICATION_JSON)
+			response = getWebResource().path("bank_billets")
+					.queryParam("page", page.toString())
+					.accept(MediaType.APPLICATION_JSON)
 					.header("User-Agent", appId).get(ClientResponse.class);
 		} else {
-			response = getWebResource().path("bank_billets").accept(MediaType.APPLICATION_JSON).header("User-Agent", appId).get(ClientResponse.class);
+			response = getWebResource().path("bank_billets")
+					.accept(MediaType.APPLICATION_JSON)
+					.header("User-Agent", appId).get(ClientResponse.class);
 		}
 		switch (response.getStatus()) {
 		case 200:
 			String json = response.getEntity(String.class);
-			List<BankBilletWrapper> wrappers = gson.fromJson(json, new TypeToken<List<BankBilletWrapper>>(){}.getType());
+			List<BankBilletWrapper> wrappers = gson.fromJson(json,
+					new TypeToken<List<BankBilletWrapper>>() {
+					}.getType());
 			return wrapperListToBilletsList(wrappers);
 		case 400:
 			throw new CobreGratisBadRequestException();
@@ -158,12 +250,13 @@ public class CobreGratis {
 		return UriBuilder.fromUri(BASE_URL).build();
 	}
 
-	private List<BankBillet> wrapperListToBilletsList(List<BankBilletWrapper> wrappers) {
+	private List<BankBillet> wrapperListToBilletsList(
+			List<BankBilletWrapper> wrappers) {
 		List<BankBillet> returnList = new ArrayList<BankBillet>();
-		if(wrappers != null) {
+		if (wrappers != null) {
 			Iterator<BankBilletWrapper> it = wrappers.iterator();
-			while(it.hasNext()) {
-				returnList.add( it.next().getBankBillet() );
+			while (it.hasNext()) {
+				returnList.add(it.next().getBankBillet());
 			}
 		}
 		return returnList;

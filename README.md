@@ -77,6 +77,8 @@ import br.com.cobregratis.exceptions.CobreGratisUnauthorizedException;
     billet.setExpireAt(calExpire.getTime());
     billet.setName("Carlos Ribeiro - sacado");
 
+    billet = cobreGratis.save(billet);
+
     System.out.println(billet.getOurNumber());
 
   } catch (CobreGratisBadRequestException e) {
@@ -92,6 +94,52 @@ import br.com.cobregratis.exceptions.CobreGratisUnauthorizedException;
     } catch (CobreGratisNotFoundException e) {
       e.printStackTrace();
     } catch (CobreGratisTooManyRequestsException e) {
+      e.printStackTrace();
+    }
+```
+
+### Atualizar um boleto (apenas boletos em rascunho)
+```java
+import br.com.cobregratis.CobreGratis;
+import br.com.cobregratis.models.BankBillet;
+import br.com.cobregratis.exceptions.CobreGratisBadRequestException;
+import br.com.cobregratis.exceptions.CobreGratisForbiddenException;
+import br.com.cobregratis.exceptions.CobreGratisInternalServerErrorException;
+import br.com.cobregratis.exceptions.CobreGratisNotFoundException;
+import br.com.cobregratis.exceptions.CobreGratisServiceUnavailableException;
+import br.com.cobregratis.exceptions.CobreGratisTooManyRequestsException;
+import br.com.cobregratis.exceptions.CobreGratisUnauthorizedException;
+
+  CobreGratis cobreGratis = new CobreGratis("SEU_TOKEN", "api_name");
+  try{
+    BankBillet billet = cobreGratis.getBankBillet(108874);
+    billet.setAmount(billet.getAmount().add(new BigDecimal(10)));
+    cobreGratis.update(billet);
+    System.out.println(billet.getAmount());
+
+  } catch (Exception e) {
+      e.printStackTrace();
+    }
+```
+
+### Excluir um boleto
+```java
+import br.com.cobregratis.CobreGratis;
+import br.com.cobregratis.models.BankBillet;
+import br.com.cobregratis.exceptions.CobreGratisBadRequestException;
+import br.com.cobregratis.exceptions.CobreGratisForbiddenException;
+import br.com.cobregratis.exceptions.CobreGratisInternalServerErrorException;
+import br.com.cobregratis.exceptions.CobreGratisNotFoundException;
+import br.com.cobregratis.exceptions.CobreGratisServiceUnavailableException;
+import br.com.cobregratis.exceptions.CobreGratisTooManyRequestsException;
+import br.com.cobregratis.exceptions.CobreGratisUnauthorizedException;
+
+  CobreGratis cobreGratis = new CobreGratis("SEU_TOKEN", "api_name");
+  try{
+    BankBillet billet = cobreGratis.getBankBillet(108874);
+    cobreGratis.delete(billet);
+
+  } catch (Exception e) {
       e.printStackTrace();
     }
 ```

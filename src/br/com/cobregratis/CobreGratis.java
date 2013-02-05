@@ -1,9 +1,13 @@
 package br.com.cobregratis;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriBuilder;
@@ -31,9 +35,32 @@ public class CobreGratis {
 	private String token;
 	private String appId;
 	private static final String BASE_URL = "https://app.cobregratis.com.br";
+	private static final String PROPERTIES_FILE = "cobregratis.properties";
 	private Client client;
 	private Gson gson;
 
+	public CobreGratis() throws IOException {
+	    
+	    Properties prop = new Properties();
+	    
+	    InputStream resourceAsStream = getClass().getClassLoader().getResourceAsStream(PROPERTIES_FILE);
+	    
+	    if(resourceAsStream == null){
+		throw new FileNotFoundException("Properties file " + PROPERTIES_FILE + " was not found." );
+	    }
+	    
+	    //load a properties file from class path, inside static method
+	    prop.load(resourceAsStream);
+	    
+	    this.token = prop.getProperty("token");
+	    this.appId = prop.getProperty("appId");
+	    
+	    client = Client.create();
+	    client.addFilter(new HTTPBasicAuthFilter(this.token, "X"));
+	    gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+	    
+	}
+	
 	public CobreGratis(String token, String appId) {
 		this.token = token;
 		this.appId = appId;
@@ -246,7 +273,7 @@ public class CobreGratis {
 		return null;
 	}
 
-	private URI getBaseURI() {
+    private URI getBaseURI() {
 		return UriBuilder.fromUri(BASE_URL).build();
 	}
 

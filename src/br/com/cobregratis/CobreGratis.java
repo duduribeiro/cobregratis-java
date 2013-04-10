@@ -25,7 +25,9 @@ import br.com.cobregratis.models.BankBilletWrapper;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
@@ -40,27 +42,27 @@ public class CobreGratis {
 	private Gson gson;
 
 	public CobreGratis() throws IOException {
-	    
+
 	    Properties prop = new Properties();
-	    
+
 	    InputStream resourceAsStream = getClass().getClassLoader().getResourceAsStream(PROPERTIES_FILE);
-	    
+
 	    if(resourceAsStream == null){
 		throw new FileNotFoundException("Properties file " + PROPERTIES_FILE + " was not found." );
 	    }
-	    
+
 	    //load a properties file from class path, inside static method
 	    prop.load(resourceAsStream);
-	    
+
 	    this.token = prop.getProperty("token");
 	    this.appId = prop.getProperty("appId");
-	    
+
 	    client = Client.create();
 	    client.addFilter(new HTTPBasicAuthFilter(this.token, "X"));
 	    gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
-	    
+
 	}
-	
+
 	public CobreGratis(String token, String appId) {
 		this.token = token;
 		this.appId = appId;
@@ -248,10 +250,22 @@ public class CobreGratis {
 		switch (response.getStatus()) {
 		case 200:
 			String json = response.getEntity(String.class);
-			List<BankBilletWrapper> wrappers = gson.fromJson(json,
-					new TypeToken<List<BankBilletWrapper>>() {
-					}.getType());
-			return wrapperListToBilletsList(wrappers);
+			//FIXME ocorrendo erro ao usar typetoken, tentar corrigir para voltar a usar o typetoken
+			JsonParser parser = new JsonParser();
+			JsonArray jArray = parser.parse(json).getAsJsonArray();
+			List<BankBillet> billets= new ArrayList<BankBillet>();
+			if(jArray != null) {
+				for(JsonElement element: jArray) {
+					BankBillet billet = gson.fromJson(element, BankBillet.class);
+					billets.add(billet);
+				}
+			}
+			return billets;
+
+//			List<BankBilletWrapper> wrappers = gson.fromJson(json,
+//					new TypeToken<List<BankBilletWrapper>>() {
+//					}.getType());
+//			return wrapperListToBilletsList(wrappers);
 		case 400:
 			throw new CobreGratisBadRequestException();
 		case 401:
@@ -277,6 +291,7 @@ public class CobreGratis {
 		return UriBuilder.fromUri(BASE_URL).build();
 	}
 
+	@SuppressWarnings("unused")
 	private List<BankBillet> wrapperListToBilletsList(
 			List<BankBilletWrapper> wrappers) {
 		List<BankBillet> returnList = new ArrayList<BankBillet>();

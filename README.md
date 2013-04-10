@@ -7,7 +7,7 @@
 
 
 ## Download
-[cobregratis-java-1.0.0.jar](https://github.com/duduribeiro/cobregratis-java/raw/master/dist/cobregratis-java-1.0.0.jar)
+[cobregratis-java-1.0.1.jar](https://github.com/duduribeiro/cobregratis-java/raw/master/dist/cobregratis-java-1.0.1.jar)
 
 ## Utilizando
 ### Exemplo para pegar um determinado boleto
@@ -159,9 +159,9 @@ import br.com.cobregratis.exceptions.CobreGratisUnauthorizedException;
   CobreGratis cobreGratis = new CobreGratis("SEU_TOKEN", "api_name");
   try{
     List<BankBillet> list = cobreGratis.getBankBillets(2);
-    
+
     System.out.println(list.get(0).getOurNumber());
-    
+
   } catch (CobreGratisBadRequestException e) {
       e.printStackTrace();
     } catch (CobreGratisUnauthorizedException e) {

@@ -256,7 +256,7 @@ public class CobreGratis {
 			List<BankBillet> billets= new ArrayList<BankBillet>();
 			if(jArray != null) {
 				for(JsonElement element: jArray) {
-					BankBillet billet = gson.fromJson(element, BankBillet.class);
+					BankBillet billet = gson.fromJson(element, BankBilletWrapper.class).getBankBillet();
 					billets.add(billet);
 				}
 			}

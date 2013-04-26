@@ -28,12 +28,12 @@ import br.com.cobregratis.models.BankBillet;
 public class TestCobreGratis {
     private CobreGratis cobreGratis;
     private CobreGratis cobreGratisNoArgs;
-    
+
     @Before
     public void setUp() throws Exception {
 	cobreGratis = new CobreGratis("MDuafJUhYgQfeYKiwPocomzCFjQaPzOYOcbKBBhCdaFVdJeChNUbuiHxJfkz", "teste_api_java");
     }
-    
+
     @Test
     public void testCreateByPropertiesFile(){
 	try {
@@ -42,7 +42,7 @@ public class TestCobreGratis {
 	    fail();
 	}
     }
-    
+
     @Test
     public void testExceptionByPropertiesFile(){
 	try {
@@ -56,16 +56,16 @@ public class TestCobreGratis {
 	    renameFile("cobregratisFake.properties", "cobregratis.properties");
 	}
     }
-    
+
     @Before
     public void setNoArgs() throws Exception {
-	cobreGratisNoArgs = new CobreGratis();
+    	cobreGratisNoArgs = new CobreGratis();
     }
-    
+
     @Test
     public void testGetBankBilletWithNoArgs() throws InterruptedException {
 	try {
-	    
+
 	    BankBillet billet = cobreGratisNoArgs.getBankBillet(74899);
 	    assertEquals("00001", billet.getOurNumber());
 	    assertEquals("Teste", billet.getName());
@@ -73,7 +73,7 @@ public class TestCobreGratis {
 	    assertEquals(Boolean.FALSE, billet.getCreatedByApi());
 	    assertEquals(10.00, billet.getAmount().floatValue(), .1);
 	    assertEquals(new Integer(3337),billet.getBankBilletAccountId());
-	    
+
 	    Thread.sleep(1000);
 	    billet = cobreGratisNoArgs.getBankBillet(75285);
 	    assertEquals("00002", billet.getOurNumber());
@@ -82,7 +82,7 @@ public class TestCobreGratis {
 	    assertEquals(Boolean.FALSE, billet.getCreatedByApi());
 	    assertEquals(12.45, billet.getAmount().floatValue(), .1);
 	    assertEquals(new Integer(3337),billet.getBankBilletAccountId());
-	    
+
 	    Thread.sleep(1000);
 	} catch (CobreGratisBadRequestException e) {
 	    fail(e.getMessage());
@@ -99,10 +99,10 @@ public class TestCobreGratis {
 	} catch (CobreGratisTooManyRequestsException e) {
 	    e.printStackTrace();
 	}
-	
+
     }
-    
-    
+
+
     @Test
     public void testGetBankBillet() throws InterruptedException {
 	try {
@@ -113,7 +113,7 @@ public class TestCobreGratis {
 	    assertEquals(Boolean.FALSE, billet.getCreatedByApi());
 	    assertEquals(10.00, billet.getAmount().floatValue(), .1);
 	    assertEquals(new Integer(3337),billet.getBankBilletAccountId());
-	    
+
 	    Thread.sleep(1000);
 	    billet = cobreGratis.getBankBillet(75285);
 	    assertEquals("00002", billet.getOurNumber());
@@ -137,9 +137,9 @@ public class TestCobreGratis {
 	} catch (CobreGratisTooManyRequestsException e) {
 	    e.printStackTrace();
 	}
-	
+
     }
-    
+
     @Test
     public void testFailWhenGetInexistentBillet() throws InterruptedException {
 	try {
@@ -156,13 +156,13 @@ public class TestCobreGratis {
 	    fail();
 	} catch (CobreGratisInternalServerErrorException e) {
 	    fail();
-	    
+
 	} catch (CobreGratisTooManyRequestsException e) {
 	    e.printStackTrace();
 	} catch (CobreGratisNotFoundException e) { }
-	
+
     }
-    
+
     @Test
     public void testSaveBankBillet() throws InterruptedException {
 	BankBillet billet = new BankBillet();
@@ -178,7 +178,7 @@ public class TestCobreGratis {
 	    assertEquals(Boolean.TRUE, billet.getCreatedByApi());
 	    assertEquals(230.00, billet.getAmount().floatValue(), .1);
 	    assertEquals(new Integer(3337),billet.getBankBilletAccountId());
-	    
+
 	} catch (CobreGratisBadRequestException e) {
 	    e.printStackTrace();
 	    fail();
@@ -201,7 +201,7 @@ public class TestCobreGratis {
 	    e.printStackTrace();
 	}
     }
-    
+
     @Test
     public void testListBankBillets() throws InterruptedException {
 	try {
@@ -211,7 +211,12 @@ public class TestCobreGratis {
 		fail();
 	    }
 	    assertEquals(Boolean.TRUE, list.size() > 1);
-	    
+	    list = cobreGratis.getBankBillets(2);
+	    if(list == null || list.isEmpty()) {
+	    	fail();
+	    }
+	    assertEquals(Boolean.TRUE, list.size() > 1);
+
 	} catch (CobreGratisBadRequestException e) {
 	    e.printStackTrace();
 	} catch (CobreGratisUnauthorizedException e) {
@@ -228,7 +233,7 @@ public class TestCobreGratis {
 	    e.printStackTrace();
 	}
     }
-    
+
     @Test
     public void testUpdate() throws InterruptedException {
 	try {
@@ -264,7 +269,7 @@ public class TestCobreGratis {
 	    fail();
 	}
     }
-    
+
     @Test
     public void testDelete() throws InterruptedException {
 	BankBillet billet = new BankBillet();
@@ -301,21 +306,21 @@ public class TestCobreGratis {
 	    fail();
 	}
     }
-    
+
     private void renameFile(String from, String to){
 	try {
-	    
+
 	    URL resource = getClass().getClassLoader().getResource(from);
 	    File oldFile = new File(resource.toURI());
-	    
+
 	    File newFile = new File(oldFile.getParent() + File.separatorChar + to);
-	    
+
 	    oldFile.renameTo(newFile);
-	    
+
 	} catch (URISyntaxException e) {
 	    e.printStackTrace();
-	} 
-	
+	}
+
     }
-    
+
 }

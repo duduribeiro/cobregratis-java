@@ -23,7 +23,7 @@ public class BankBillet {
 	private String city;
 
 	@SerializedName("cnpj_cpf")
-	private String cnpjCpf;
+	private CnpjCpf cnpjCpf;
 
 	private String comments;
 
@@ -174,13 +174,7 @@ public class BankBillet {
 	private String carnetExternalLink;
 
 
-
-
-
-
-
-
-
+	//--getters and setters
 
 	public String getAcceptance() {
 		return acceptance;
@@ -238,11 +232,11 @@ public class BankBillet {
 		this.city = city;
 	}
 
-	public String getCnpjCpf() {
+	public CnpjCpf getCnpjCpf() {
 		return cnpjCpf;
 	}
 
-	public void setCnpjCpf(String cnpjCpf) {
+	public void setCnpjCpf(CnpjCpf cnpjCpf) {
 		this.cnpjCpf = cnpjCpf;
 	}
 
@@ -700,6 +694,42 @@ public class BankBillet {
 
 	public void setCreatedByApi(Boolean createdByApi) {
 		this.createdByApi = createdByApi;
+	}
+
+
+	//inner class
+
+	public class CnpjCpf {
+		private String numero;
+		private Integer match;
+		@SerializedName("numero_puro")
+		private String numeroPuro;
+		@SerializedName("para_verificacao")
+		private String paraVerificacao;
+
+		public String getNumero() {
+			return numero;
+		}
+
+		public void setNumero(String numero) {
+			this.numero = numero;
+		}
+
+		public Integer getMatch() {
+			return match;
+		}
+
+		public void setMatch(Integer match) {
+			this.match = match;
+		}
+
+		public String getNumeroPuro() {
+			return numeroPuro;
+		}
+
+		public void setNumeroPuro(String numeroPuro) {
+			this.numeroPuro = numeroPuro;
+		}
 	}
 
 }

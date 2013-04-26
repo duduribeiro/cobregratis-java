@@ -31,7 +31,7 @@ public class TestCobreGratis {
 
     @Before
     public void setUp() throws Exception {
-	cobreGratis = new CobreGratis("MDuafJUhYgQfeYKiwPocomzCFjQaPzOYOcbKBBhCdaFVdJeChNUbuiHxJfkz", "teste_api_java");
+	cobreGratis = new CobreGratis("qerpPazrNx95U8Lox35r", "teste_api_java");
     }
 
     @Test
@@ -66,22 +66,13 @@ public class TestCobreGratis {
     public void testGetBankBilletWithNoArgs() throws InterruptedException {
 	try {
 
-	    BankBillet billet = cobreGratisNoArgs.getBankBillet(74899);
+	    BankBillet billet = cobreGratisNoArgs.getBankBillet(157196);
 	    assertEquals("00001", billet.getOurNumber());
-	    assertEquals("Teste", billet.getName());
-	    assertEquals("00191.23454 67000.000009 00000.001214 5 54960000001000", billet.getLine());
+	    assertEquals("Quentin", billet.getName());
+	    assertEquals("00190.00009 01234.567004 00000.001172 4 58630000000228", billet.getLine());
 	    assertEquals(Boolean.FALSE, billet.getCreatedByApi());
-	    assertEquals(10.00, billet.getAmount().floatValue(), .1);
-	    assertEquals(new Integer(3337),billet.getBankBilletAccountId());
-
-	    Thread.sleep(1000);
-	    billet = cobreGratisNoArgs.getBankBillet(75285);
-	    assertEquals("00002", billet.getOurNumber());
-	    assertEquals("Nome Sacado", billet.getName());
-	    assertEquals("00191.23454 67000.000009 00000.002212 1 55030000001245", billet.getLine());
-	    assertEquals(Boolean.FALSE, billet.getCreatedByApi());
-	    assertEquals(12.45, billet.getAmount().floatValue(), .1);
-	    assertEquals(new Integer(3337),billet.getBankBilletAccountId());
+	    assertEquals(2.28, billet.getAmount().floatValue(), .1);
+	    assertEquals(new Integer(4954),billet.getBankBilletAccountId());
 
 	    Thread.sleep(1000);
 	} catch (CobreGratisBadRequestException e) {
@@ -177,7 +168,7 @@ public class TestCobreGratis {
 	    assertEquals("Carlos Ribeiro - sacado", billet.getName());
 	    assertEquals(Boolean.TRUE, billet.getCreatedByApi());
 	    assertEquals(230.00, billet.getAmount().floatValue(), .1);
-	    assertEquals(new Integer(3337),billet.getBankBilletAccountId());
+	    assertEquals(new Integer(4954),billet.getBankBilletAccountId());
 
 	} catch (CobreGratisBadRequestException e) {
 	    e.printStackTrace();
@@ -211,11 +202,6 @@ public class TestCobreGratis {
 		fail();
 	    }
 	    assertEquals(Boolean.TRUE, list.size() > 1);
-	    list = cobreGratis.getBankBillets(2);
-	    if(list == null || list.isEmpty()) {
-	    	fail();
-	    }
-	    assertEquals(Boolean.TRUE, list.size() > 1);
 
 	} catch (CobreGratisBadRequestException e) {
 	    e.printStackTrace();
@@ -237,7 +223,7 @@ public class TestCobreGratis {
     @Test
     public void testUpdate() throws InterruptedException {
 	try {
-	    BankBillet billet = cobreGratis.getBankBillet(108874);
+	    BankBillet billet = cobreGratis.getBankBillet(157201);
 	    BigDecimal oldValue = billet.getAmount();
 	    billet.setAmount(billet.getAmount().add(new BigDecimal(10)));
 	    Thread.sleep(1000);

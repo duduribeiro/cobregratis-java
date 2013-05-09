@@ -7,7 +7,7 @@
 
 
 ## Download
-[cobregratis-java-1.0.3.jar](https://github.com/duduribeiro/cobregratis-java/raw/master/dist/cobregratis-java-1.0.3.jar)
+[cobregratis-java-1.0.4.jar](https://github.com/duduribeiro/cobregratis-java/raw/master/dist/cobregratis-java-1.0.4.jar)
 
 ## Utilizando
 ### Exemplo para pegar um determinado boleto
@@ -177,4 +177,15 @@ import br.com.cobregratis.exceptions.CobreGratisUnauthorizedException;
     } catch (CobreGratisTooManyRequestsException e) {
       e.printStackTrace();
     }
+```
+### Quitar um boleto
+```java
+CobreGratis cobreGratis = new CobreGratis("SEU_TOKEN", "api_name");
+  try{
+    BankBillet billet = cobreGratis.getBankBillet(108874);
+    cobreGratis.pay(billet, new Date(), new BigDecimal(300.00) );
+
+  } catch (Exception e) {
+      e.printStackTrace();
+  }
 ```

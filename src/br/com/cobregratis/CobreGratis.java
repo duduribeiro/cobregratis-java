@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -98,9 +97,8 @@ public class CobreGratis {
 		switch (response.getStatus()) {
 		case 201:
 			String jsonNew = response.getEntity(String.class);
-			wrapper = gson.fromJson(jsonNew, BankBilletWrapper.class);
-			billet = wrapper.getBankBillet();
-			return wrapper.getBankBillet();
+			billet = gson.fromJson(jsonNew, BankBillet.class);
+			return billet;
 		case 400:
 			throw new CobreGratisBadRequestException();
 		case 401:
@@ -228,6 +226,7 @@ public class CobreGratis {
 		case 404:
 			throw new CobreGratisNotFoundException();
 		case 422:
+			System.out.println(response.getEntity(String.class));
 			JsonParser parser = new JsonParser();
 			JsonObject object = (JsonObject)parser.parse( response.getEntity(String.class) );
 			throw new CobreGratisUnprocessibleEntityException(object.get("error").getAsString());
@@ -255,9 +254,8 @@ public class CobreGratis {
 		switch (response.getStatus()) {
 		case 200:
 			String json = response.getEntity(String.class);
-			BankBilletWrapper wrappedBillet = gson.fromJson(json,
-					BankBilletWrapper.class);
-			return wrappedBillet.getBankBillet();
+			BankBillet billet = gson.fromJson(json, BankBillet.class);
+			return billet;
 		case 400:
 			throw new CobreGratisBadRequestException();
 		case 401:
@@ -307,21 +305,11 @@ public class CobreGratis {
 		switch (response.getStatus()) {
 		case 200:
 			String json = response.getEntity(String.class);
-//			JsonParser parser = new JsonParser();
-//			JsonArray jArray = parser.parse(json).getAsJsonArray();
-//			List<BankBillet> billets= new ArrayList<BankBillet>();
-//			if(jArray != null) {
-//				for(JsonElement element: jArray) {
-//					BankBillet billet = gson.fromJson(element, BankBilletWrapper.class).getBankBillet();
-//					billets.add(billet);
-//				}
-//			}
-//			return billets;
 
-			List<BankBilletWrapper> wrappers = gson.fromJson(json,
-					new TypeToken<List<BankBilletWrapper>>() {
+			List<BankBillet> billets = gson.fromJson(json,
+					new TypeToken<List<BankBillet>>() {
 					}.getType());
-			return wrapperListToBilletsList(wrappers);
+			return billets;
 		case 400:
 			throw new CobreGratisBadRequestException();
 		case 401:
@@ -345,18 +333,6 @@ public class CobreGratis {
 
     private URI getBaseURI() {
 		return UriBuilder.fromUri(BASE_URL).build();
-	}
-
-	private List<BankBillet> wrapperListToBilletsList(
-			List<BankBilletWrapper> wrappers) {
-		List<BankBillet> returnList = new ArrayList<BankBillet>();
-		if (wrappers != null) {
-			Iterator<BankBilletWrapper> it = wrappers.iterator();
-			while (it.hasNext()) {
-				returnList.add(it.next().getBankBillet());
-			}
-		}
-		return returnList;
 	}
 
 }

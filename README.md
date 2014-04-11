@@ -7,7 +7,7 @@
 
 
 ## Download
-[cobregratis-java-1.0.4.jar](https://github.com/duduribeiro/cobregratis-java/raw/master/dist/cobregratis-java-1.0.4.jar)
+[cobregratis-java-1.1.0.jar](https://github.com/duduribeiro/cobregratis-java/raw/master/dist/cobregratis-java-1.1.0.jar)
 
 ## Utilizando
 ### Exemplo para pegar um determinado boleto

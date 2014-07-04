@@ -41,6 +41,8 @@ import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
 public class CobreGratis {
 	private String token;
 	private String appId;
+	//Staging para testes
+	//private static final String BASE_URL = "http://staging.cobregratis.com.br";
 	private static final String BASE_URL = "https://app.cobregratis.com.br";
 	private static final String PROPERTIES_FILE = "cobregratis.properties";
 	private Client client;
@@ -97,6 +99,8 @@ public class CobreGratis {
 		switch (response.getStatus()) {
 		case 201:
 			String jsonNew = response.getEntity(String.class);
+			System.out.println(jsonNew);
+
 			billet = gson.fromJson(jsonNew, BankBillet.class);
 			return billet;
 		case 400:
@@ -304,8 +308,8 @@ public class CobreGratis {
 		}
 		switch (response.getStatus()) {
 		case 200:
-			String json = response.getEntity(String.class);
-
+			String json = response.getEntity(String.class);	
+			
 			List<BankBillet> billets = gson.fromJson(json,
 					new TypeToken<List<BankBillet>>() {
 					}.getType());

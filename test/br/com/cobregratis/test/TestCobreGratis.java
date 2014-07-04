@@ -24,7 +24,7 @@ public class TestCobreGratis {
 
 	@Before
 	public void setUp() throws Exception {
-		cobreGratis = new CobreGratis("qerpPazrNx95U8Lox35r", "teste_api_java");
+		cobreGratis = new CobreGratis("uiF3x9JuMFMBMasanVPo", "teste_api_java");
 	}
 
 	@After

@@ -2,8 +2,8 @@
 
 ## Dependências (Incluidas também na pasta lib)
 
-* [gson-2.2.2.jar](http://google-gson.googlecode.com/files/google-gson-2.2.2-release.zip)
-* [jersey-bundle-1.14.jar](https://maven.java.net/content/repositories/releases/com/sun/jersey/jersey-bundle/1.14/jersey-bundle-1.14.jar)
+* [gson-2.2.4.jar](http://google-gson.googlecode.com/files/google-gson-2.2.4-release.zip)
+* [jersey-bundle-1.18.jar](https://maven.java.net/content/repositories/releases/com/sun/jersey/jersey-bundle/1.18/jersey-bundle-1.18.jar)
 
 
 ## Download

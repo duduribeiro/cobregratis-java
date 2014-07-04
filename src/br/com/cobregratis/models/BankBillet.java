@@ -1,6 +1,7 @@
 package br.com.cobregratis.models;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 
 import com.google.gson.annotations.SerializedName;
@@ -22,8 +23,11 @@ public class BankBillet {
 
 	private String city;
 
-	@SerializedName("cnpj_cpf")
-	private CnpjCpf cnpjCpf;
+	@SerializedName("email")
+	private Email email;
+
+	@SerializedName("cnpj_cpf_string")
+	private String cnpjCpfString;
 
 	private String comments;
 
@@ -98,7 +102,7 @@ public class BankBillet {
 	private String instructions;
 	private String kind;
 	private String line;
-	private byte[] meta;
+	private String meta;
 	private String name;
 	private String neighborhood;
 
@@ -126,7 +130,15 @@ public class BankBillet {
 	@SerializedName("paid_at")
 	private Date paidAt;
 
-	private Integer parcel;
+	@SerializedName("parcels")
+	private Integer parcels;
+
+	@SerializedName("all_parcels_ids")
+	private ArrayList<Integer> allParcelsIds;
+
+	public ArrayList<Integer> getAllParcelsIds() {
+		return allParcelsIds;
+	}
 
 	@SerializedName("pdf_created_at")
 	private Date pdfCreatedAt;
@@ -232,12 +244,12 @@ public class BankBillet {
 		this.city = city;
 	}
 
-	public CnpjCpf getCnpjCpf() {
-		return cnpjCpf;
+	public String getCnpjCpfString() {
+		return cnpjCpfString;
 	}
 
-	public void setCnpjCpf(CnpjCpf cnpjCpf) {
-		this.cnpjCpf = cnpjCpf;
+	public void setCnpjCpfString(String cnpjCpfString) {
+		this.cnpjCpfString = cnpjCpfString;
 	}
 
 	public String getComments() {
@@ -456,11 +468,11 @@ public class BankBillet {
 		this.line = line;
 	}
 
-	public byte[] getMeta() {
+	public String getMeta() {
 		return meta;
 	}
 
-	public void setMeta(byte[] meta) {
+	public void setMeta(String meta) {
 		this.meta = meta;
 	}
 
@@ -544,12 +556,12 @@ public class BankBillet {
 		this.paidAt = paidAt;
 	}
 
-	public Integer getParcel() {
-		return parcel;
+	public Integer getParcels() {
+		return parcels;
 	}
 
-	public void setParcel(Integer parcel) {
-		this.parcel = parcel;
+	public void setParcels(Integer parcels) {
+		this.parcels = parcels;
 	}
 
 	public Date getPdfCreatedAt() {
@@ -696,40 +708,102 @@ public class BankBillet {
 		this.createdByApi = createdByApi;
 	}
 
-
-	//inner class
-
-	public class CnpjCpf {
-		private String numero;
-		private Integer match;
-		@SerializedName("numero_puro")
-		private String numeroPuro;
-		@SerializedName("para_verificacao")
-		private String paraVerificacao;
-
-		public String getNumero() {
-			return numero;
-		}
-
-		public void setNumero(String numero) {
-			this.numero = numero;
-		}
-
-		public Integer getMatch() {
-			return match;
-		}
-
-		public void setMatch(Integer match) {
-			this.match = match;
-		}
-
-		public String getNumeroPuro() {
-			return numeroPuro;
-		}
-
-		public void setNumeroPuro(String numeroPuro) {
-			this.numeroPuro = numeroPuro;
-		}
+	public Email getEmail() {
+		return email;
 	}
 
+	public void setEmail(Email email) {
+		this.email = email;
+	}
+
+	public Date getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	//inner class
+	public static class Email {
+		@SerializedName("name")
+		private String name;
+		@SerializedName("address")
+		private String address;
+		@SerializedName("cc_addresses")
+		private String ccAddresses;
+		@SerializedName("bcc_addresses")
+		private String bccAddresses;
+		@SerializedName("subject")
+		private String subject;
+		@SerializedName("email_body")
+		private String emailBody;
+		@SerializedName("bank_billet_in_pdf")
+		private Boolean bankBilletInPdf;
+		@SerializedName("bank_billet_in_png")
+		private Boolean bankBilletInPng;
+
+		public String getName() {
+			return name;
+		}
+
+		public void setName(String name) {
+			this.name = name;
+		}
+
+		public String getAddress() {
+			return address;
+		}
+
+		public void setAddress(String address) {
+			this.address = address;
+		}
+
+		public String getSubject() {
+			return subject;
+		}
+
+		public void setSubject(String subject) {
+			this.subject = subject;
+		}
+		public String getCcAddresses() {
+			return ccAddresses;
+		}
+
+		public void setCcAddresses(String ccAddresses) {
+			this.ccAddresses = ccAddresses;
+		}
+
+		public String getBccAddresses() {
+			return bccAddresses;
+		}
+
+		public void setBccAddresses(String bccAddresses) {
+			this.bccAddresses = bccAddresses;
+		}
+
+		public String getEmailBody() {
+			return emailBody;
+		}
+
+		public void setEmailBody(String emailBody) {
+			this.emailBody = emailBody;
+		}
+
+		public Boolean getBankBilletInPdf() {
+			return bankBilletInPdf;
+		}
+
+		public void setBankBilletInPdf(Boolean bankBilletInPdf) {
+			this.bankBilletInPdf = bankBilletInPdf;
+		}
+
+		public Boolean getBankBilletInPng() {
+			return bankBilletInPng;
+		}
+
+		public void setBankBilletInPng(Boolean bankBilletInPng) {
+			this.bankBilletInPng = bankBilletInPng;
+		}
+	}
 }

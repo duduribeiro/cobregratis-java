@@ -28,13 +28,13 @@ public class Exemplo {
 			//Criando um boleto
 			BankBillet billet = new BankBillet(); 
 			billet.setAmount(new BigDecimal(6.00)); 
-			billet.setAddress("Av. Lazaro Moreira, 944"); 
-			billet.setCity("Santa Vitoria"); 
-			billet.setZipcode("38320-000"); 
+			billet.setAddress("Av. Pres. Vargas, 633 sl 1716"); 
+			billet.setCity("Rio de Janeiro"); 
+			billet.setZipcode("20071-004"); 
 
 			Email email = new Email();
-			email.setName("LAYLA");
-			email.setAddress("kivanio@cobregratis.com.br");
+			email.setName("Cobre Grátis");
+			email.setAddress("suporte@cobregratis.com.br");
 			billet.setEmail(email);
 
 			Calendar calExpire = Calendar.getInstance(); 

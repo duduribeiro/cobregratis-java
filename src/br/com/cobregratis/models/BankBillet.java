@@ -136,10 +136,6 @@ public class BankBillet {
 	@SerializedName("all_parcels_ids")
 	private ArrayList<Integer> allParcelsIds;
 
-	public ArrayList<Integer> getAllParcelsIds() {
-		return allParcelsIds;
-	}
-
 	@SerializedName("pdf_created_at")
 	private Date pdfCreatedAt;
 
@@ -184,9 +180,111 @@ public class BankBillet {
 
 	@SerializedName("carnet_external_link")
 	private String carnetExternalLink;
-
-
+	
+	@SerializedName("customer_identification")
+	private String customerIdentification;
+	
+	@SerializedName("customer_cc_addresses")
+	private String customerCcAddresses;
+	
+	@SerializedName("customer_bcc_addresses")
+	private String customerBccAddresses;
+	
+	@SerializedName("customer_email")
+	private String customerEmail;
+	
+	@SerializedName("save_customer")
+	private Boolean saveCustomer;
+	
+	@SerializedName("customer_ids")
+	private ArrayList<Integer> customerIds;
+	
+	@SerializedName("generate_on_creation")
+	private Boolean generateOnCreation;
+	
+	@SerializedName("send_email_on_creation")
+	private Boolean sendEmailOnCreation;
+	
+	@SerializedName("recurrent_cycle")
+	private String recurrentCycle;
+	
 	//--getters and setters
+
+	public ArrayList<Integer> getAllParcelsIds() {
+		return allParcelsIds;
+	}
+	
+	public String getCustomerIdentification() {
+		return customerIdentification;
+	}
+
+	public void setCustomerIdentification(String customerIdentification) {
+		this.customerIdentification = customerIdentification;
+	}
+
+	public String getCustomerCcAddresses() {
+		return customerCcAddresses;
+	}
+
+	public void setCustomerCcAddresses(String customerCcAddresses) {
+		this.customerCcAddresses = customerCcAddresses;
+	}
+
+	public String getCustomerBccAddresses() {
+		return customerBccAddresses;
+	}
+
+	public void setCustomerBccAddresses(String customerBccAddresses) {
+		this.customerBccAddresses = customerBccAddresses;
+	}
+
+	public String getCustomerEmail() {
+		return customerEmail;
+	}
+
+	public void setCustomerEmail(String customerEmail) {
+		this.customerEmail = customerEmail;
+	}
+
+	public Boolean getSaveCustomer() {
+		return saveCustomer;
+	}
+
+	public void setSaveCustomer(Boolean saveCustomer) {
+		this.saveCustomer = saveCustomer;
+	}
+
+	public ArrayList<Integer> getCustomerIds() {
+		return customerIds;
+	}
+
+	public void setCustomerIds(ArrayList<Integer> customerIds) {
+		this.customerIds = customerIds;
+	}
+
+	public Boolean getGenerateOnCreation() {
+		return generateOnCreation;
+	}
+
+	public void setGenerateOnCreation(Boolean generateOnCreation) {
+		this.generateOnCreation = generateOnCreation;
+	}
+
+	public Boolean getSendEmailOnCreation() {
+		return sendEmailOnCreation;
+	}
+
+	public void setSendEmailOnCreation(Boolean sendEmailOnCreation) {
+		this.sendEmailOnCreation = sendEmailOnCreation;
+	}
+
+	public String getRecurrentCycle() {
+		return recurrentCycle;
+	}
+
+	public void setRecurrentCycle(String recurrentCycle) {
+		this.recurrentCycle = recurrentCycle;
+	}
 
 	public String getAcceptance() {
 		return acceptance;

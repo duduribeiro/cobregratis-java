@@ -99,8 +99,6 @@ public class CobreGratis {
 		switch (response.getStatus()) {
 		case 201:
 			String jsonNew = response.getEntity(String.class);
-			System.out.println(jsonNew);
-
 			billet = gson.fromJson(jsonNew, BankBillet.class);
 			return billet;
 		case 400:
@@ -230,7 +228,6 @@ public class CobreGratis {
 		case 404:
 			throw new CobreGratisNotFoundException();
 		case 422:
-			System.out.println(response.getEntity(String.class));
 			JsonParser parser = new JsonParser();
 			JsonObject object = (JsonObject)parser.parse( response.getEntity(String.class) );
 			throw new CobreGratisUnprocessibleEntityException(object.get("error").getAsString());

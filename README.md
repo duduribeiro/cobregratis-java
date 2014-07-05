@@ -5,9 +5,12 @@
 * [gson-2.2.4.jar](http://google-gson.googlecode.com/files/google-gson-2.2.4-release.zip)
 * [jersey-bundle-1.18.jar](https://maven.java.net/content/repositories/releases/com/sun/jersey/jersey-bundle/1.18/jersey-bundle-1.18.jar)
 
+## Campos disponíveis
+
+* [Campos](http://suporte.cobregratis.com.br/hc/pt-br/articles/201644783-Campos-que-podem-ser-usados-na-criação-de-boletos)
 
 ## Download
-[cobregratis-java-1.1.0.jar](https://github.com/duduribeiro/cobregratis-java/raw/master/dist/cobregratis-java-1.1.0.jar)
+[cobregratis-java-1.2.1.jar](https://github.com/BielSystems/cobregratis-java/raw/master/dist/cobregratis-java-1.2.1.jar)
 
 ## Utilizando
 ### Exemplo para pegar um determinado boleto

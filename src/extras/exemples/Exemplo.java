@@ -33,8 +33,8 @@ public class Exemplo {
 			billet.setZipcode("20071-004"); 
 
 			Email email = new Email();
-			email.setName("Cobre Grátis");
-			email.setAddress("suporte@cobregratis.com.br");
+			email.setName("Nome do Pagador");
+			email.setAddress("email@dopagador.com.br");
 			billet.setEmail(email);
 
 			Calendar calExpire = Calendar.getInstance(); 

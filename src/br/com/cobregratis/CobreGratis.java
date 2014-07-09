@@ -41,6 +41,8 @@ import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
 public class CobreGratis {
 	private String token;
 	private String appId;
+	//Staging para testes
+	//private static final String BASE_URL = "http://staging.cobregratis.com.br";
 	private static final String BASE_URL = "https://app.cobregratis.com.br";
 	private static final String PROPERTIES_FILE = "cobregratis.properties";
 	private Client client;
@@ -226,7 +228,6 @@ public class CobreGratis {
 		case 404:
 			throw new CobreGratisNotFoundException();
 		case 422:
-			System.out.println(response.getEntity(String.class));
 			JsonParser parser = new JsonParser();
 			JsonObject object = (JsonObject)parser.parse( response.getEntity(String.class) );
 			throw new CobreGratisUnprocessibleEntityException(object.get("error").getAsString());
@@ -304,8 +305,8 @@ public class CobreGratis {
 		}
 		switch (response.getStatus()) {
 		case 200:
-			String json = response.getEntity(String.class);
-
+			String json = response.getEntity(String.class);	
+			
 			List<BankBillet> billets = gson.fromJson(json,
 					new TypeToken<List<BankBillet>>() {
 					}.getType());
